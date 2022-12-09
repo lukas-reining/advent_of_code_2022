@@ -1,5 +1,5 @@
 import { readFileAsString, toLines } from "../helpers/parsing";
-import { union } from "../helpers/set";
+import { intersection } from "../helpers/set";
 import { toSum } from "../helpers/math";
 
 export type Compartment = [string[], string[]];
@@ -12,7 +12,7 @@ export function toCompartments(line: string): Compartment {
 }
 
 export function toCommonType([compartment1, compartment2]: Compartment) {
-  return union(compartment1, compartment2)[0];
+  return intersection(compartment1, compartment2)[0];
 }
 
 export function toPriority(type: string) {

@@ -2,7 +2,7 @@ import { readFileAsString, toLines } from "../helpers/parsing";
 import { toSum } from "../helpers/math";
 import { toPriority } from "./part_1";
 import { toChunks } from "../helpers/sort";
-import { union } from "../helpers/set";
+import { intersection } from "../helpers/set";
 
 type ElveGroup = [string[], string[], string[]];
 
@@ -16,8 +16,8 @@ export function toElveGroups(rucksacks: string[]): ElveGroup[] {
 }
 
 export function toCommonType([elve1, elve2, elve3]: ElveGroup) {
-  const union1 = union(elve1, elve2);
-  return union(union1, elve3)[0];
+  const union1 = intersection(elve1, elve2);
+  return intersection(union1, elve3)[0];
 }
 
 export function solve() {
