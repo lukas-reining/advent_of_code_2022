@@ -1,6 +1,5 @@
 import * as fs from 'fs'
 
-
 export function readFileAsString(path: string) {
     return fs.readFileSync(path, 'utf-8')
 }
