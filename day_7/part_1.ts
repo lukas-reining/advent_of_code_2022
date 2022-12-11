@@ -48,6 +48,17 @@ export function toTermialLines(lines: string[]): TerminalLine[] {
   });
 }
 
+function recalculateSize(folder: Folder) {
+  if (folder.type !== "folder") {
+    return folder;
+  }
+
+  folder.subfolders = folder.subfolders.map(recalculateSize);
+  folder.size = folder.subfolders.map(to("size")).reduce(toSum, 0);
+
+  return folder;
+}
+
 export function buildFileTree(lines: TerminalLine[]): Folder {
   const stack: Folder[] = [];
 
@@ -56,12 +67,6 @@ export function buildFileTree(lines: TerminalLine[]): Folder {
 
     if (line.type === "cd" && line.argument === "..") {
       stack.pop();
-      currentFolder.size = currentFolder.subfolders
-        .map(to("size"))
-        .reduce(toSum, 0);
-      stack[stack.length - 1].size = stack[stack.length - 1].subfolders
-        .map(to("size"))
-        .reduce(toSum, 0);
     } else if (line.type === "cd") {
       const newFolder = {
         name: line.argument,
@@ -76,7 +81,6 @@ export function buildFileTree(lines: TerminalLine[]): Folder {
 
       stack.push(newFolder);
     } else if (line.type === "file") {
-      currentFolder.size += line.size;
       currentFolder.subfolders.push({
         name: line.name,
         type: "file",
@@ -88,7 +92,7 @@ export function buildFileTree(lines: TerminalLine[]): Folder {
     }
   }
 
-  return stack[0];
+  return recalculateSize(stack[0]);
 }
 
 export function sumAllFoldersBelow(folder: Folder): number {
@@ -112,7 +116,7 @@ export function logTree(folder: Folder, indent = 0) {
 }
 
 export function solve() {
-  const text = readFileAsString("./input.txt");
+  const text = readFileAsString("./example_input.txt");
   const lines = toLines(text);
 
   const terminalLines = toTermialLines(lines);
