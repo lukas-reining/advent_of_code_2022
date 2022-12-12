@@ -56,6 +56,5 @@ export function solve() {
 
 const visibilityMap = solve();
 
-console.log(visibilityMap);
 console.log(countVisible(visibilityMap));
 
