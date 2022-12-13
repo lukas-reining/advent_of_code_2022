@@ -28,7 +28,7 @@ export function toMove(line: string): Move {
 
 export function executeMove(isCrateMover9001: boolean) {
   return (currentShip: Ship, move: Move) : Ship=> {
-    const itemsToMove = currentShip[move.from].splice(-move.amount, move.amount);
+    const itemsToMove = currentShip[move.from].splice(-move.amount);
 
     if(!isCrateMover9001){
       itemsToMove.reverse()
