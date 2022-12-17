@@ -4,7 +4,10 @@
   "description": "Advent of Code 2022",
   "main": "index.ts",
   "license": "MIT",
-  "dependencies": {},
+  "dependencies": {
+    "@types/node-dijkstra": "^2.5.3",
+    "node-dijkstra": "^2.5.0"
+  },
   "devDependencies": {
     "@types/node": "^18.11.11",
     "nodemon": "^2.0.20",

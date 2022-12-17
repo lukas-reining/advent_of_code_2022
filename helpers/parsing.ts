@@ -10,7 +10,7 @@ export function toLines(text: string) {
 
 export type Matrix<T> = T[][]
 
-export type CharacterMatrix = Matrix<String>
+export type CharacterMatrix = Matrix<string>
 export function toCharacterMatrix(input: string): CharacterMatrix {
   return input.split("\n").map((line) => line.split(""));
 }
