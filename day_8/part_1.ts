@@ -1,10 +1,6 @@
-import {
-  DecimalMatrix,
-  Matrix,
-  readFileAsString,
-  toDecimalMatrix,
-} from "../helpers/parsing";
+import { readFileAsString } from "../helpers/parsing";
 import { toSum } from "../helpers/math";
+import {DecimalMatrix, Matrix, toDecimalMatrix} from "../helpers/matrix";
 
 export function isLargest(row: number[], value: number) {
   return row.every((currentValue) => currentValue < value);

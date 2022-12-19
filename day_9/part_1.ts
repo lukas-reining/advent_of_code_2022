@@ -1,11 +1,11 @@
 import {
-  Matrix,
   readFileAsString,
   toDecimalInt,
   toLines,
 } from "../helpers/parsing";
 import { toSum } from "../helpers/math";
 import { to } from "../helpers/mapping";
+import {Matrix} from "../helpers/matrix";
 
 export type Position = { col: number; row: number };
 export type Field = { state: "." | "S" | "T" | "H"; visited: boolean };

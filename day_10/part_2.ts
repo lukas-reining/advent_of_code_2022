@@ -1,6 +1,7 @@
-import { Matrix, readFileAsString, toLines } from "../helpers/parsing";
+import {  readFileAsString, toLines } from "../helpers/parsing";
 import { tap } from "../helpers/utils";
 import { Instruction, toInstruction } from "./part_1";
+import {Matrix} from "../helpers/matrix";
 
 type Pixel = "." | "#";
 type Screen = Matrix<Pixel>;

@@ -1,12 +1,11 @@
 import {
-  Matrix,
   readFileAsString,
-  toCharacterMatrix,
 } from "../helpers/parsing";
 import { isDefined, whereEquals } from "../helpers/filter";
 import { buildGraph, Field, NodeMatrix } from "./part_1";
 import { to } from "../helpers/mapping";
 import {numbersAscending, numbersDescending} from "../helpers/sort";
+import {Matrix, toCharacterMatrix} from "../helpers/matrix";
 
 export function findPathFromBestStartingPoint(nodeMatrix: Matrix<Field>) {
   const nodes = nodeMatrix.flat();

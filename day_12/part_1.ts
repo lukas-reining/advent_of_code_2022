@@ -1,12 +1,10 @@
 import {
-  CharacterMatrix,
-  Matrix,
   readFileAsString,
-  toCharacterMatrix,
 } from "../helpers/parsing";
 
 import { isDefined, whereEquals } from "../helpers/filter";
 import Graph from "node-dijkstra";
+import {CharacterMatrix, Matrix, toCharacterMatrix} from "../helpers/matrix";
 
 export class Field {
   constructor(
@@ -90,4 +88,4 @@ export function solve() {
   return findPathFromStartToEnd(nodes).length - 1;
 }
 
-// console.log(solve());
+console.log(solve());

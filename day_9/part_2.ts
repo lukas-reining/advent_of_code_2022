@@ -1,11 +1,11 @@
 import {
-  Matrix,
   readFileAsString,
   toDecimalInt,
   toLines,
 } from "../helpers/parsing";
 import { toSum } from "../helpers/math";
 import { to } from "../helpers/mapping";
+import {Matrix} from "../helpers/matrix";
 
 export type Instruction = { direction: "U" | "D" | "L" | "R"; fields: number };
 export type Bridge = Matrix<Field>;

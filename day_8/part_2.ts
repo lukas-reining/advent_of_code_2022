@@ -1,6 +1,7 @@
-import { Matrix, readFileAsString, toDecimalMatrix } from "../helpers/parsing";
+import {  readFileAsString } from "../helpers/parsing";
 import { column } from "./part_1";
 import { numbersDescending } from "../helpers/sort";
+import {Matrix, toDecimalMatrix} from "../helpers/matrix";
 
 export function calculateScenicScore(row: number[], value: number) {
   return row.reduce<number[]>((values, currentValue) => {
