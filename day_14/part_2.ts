@@ -1,5 +1,6 @@
 import {readFileAsString, toLines} from "../helpers/parsing";
 import {dropSand, printCave, toCave, toPath} from "./part_1";
+import {measureTime} from "../helpers/time";
 
 export function solve() {
     const text = readFileAsString("./input.txt");
@@ -15,5 +16,5 @@ export function solve() {
     return steps;
 }
 
-const result = solve();
+const result = measureTime(() => solve());
 console.log(result);

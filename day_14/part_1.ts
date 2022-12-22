@@ -2,6 +2,7 @@ import { readFileAsString, toDecimalInt, toLines } from "../helpers/parsing";
 import { createMatrix, Matrix } from "../helpers/matrix";
 import { to } from "../helpers/mapping";
 import { numbersDescending } from "../helpers/sort";
+import {measureTime} from "../helpers/time";
 
 export type PathPoint = { x: number; y: number };
 export type Path = PathPoint[];
@@ -67,7 +68,6 @@ export function dropSand(
 
   if (newYSand + 1 >= cave.length) {
     cave[newYSand][xSand] = "o";
-    console.log()
     return { finished: true, cave };
   }
 
@@ -102,9 +102,10 @@ export function solve() {
     steps++;
   }
 
-  printCave(cave);
+  // printCave(cave);
   return steps;
 }
 
-const result = solve();
+
+const result = measureTime(() => solve());
 console.log(result);
