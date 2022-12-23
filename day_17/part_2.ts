@@ -8,13 +8,15 @@ export type Shape = [number, number][];
 
 const chamberWidth = 7;
 
-function* jets(jetInput: string): Generator<string> {
+function* jets(
+  jetInput: string
+): Generator<{ index: number; jet: string }, { index: number; jet: string }> {
   let index = 0;
 
   while (true) {
     const nextValue = index % jetInput.length;
     index += 1;
-    yield jetInput[nextValue];
+    yield { index: nextValue, jet: jetInput[nextValue] };
   }
 }
 
@@ -63,21 +65,29 @@ function simulate(input: string) {
   const jet = jets(input);
 
   let chamber = addRows(10, []);
-  let rockHeight = 0;
-  let fallenRocks = 0;
+  let rockHeight = 0n;
+  let fallenRocks = 0n;
 
-  while (fallenRocks < 2022) {
-    let { shape: currentShape } = shape.next().value;
+  const cache: Record<string, [bigint, bigint]> = {};
+  const cacheSize = 30;
+  let repeatingHeight = 0n;
+
+  const target = 1000000000000n;
+
+  while (fallenRocks < target) {
+    console.log(fallenRocks);
+
+    let { shape: currentShape, index: shapeIndex } = shape.next().value;
 
     const shapeHeight1 = shapeHeight(currentShape);
     chamber = addRows(shapeHeight1, chamber);
 
-    const yOffset = chamber.length - rockHeight - 3;
-    currentShape = move(currentShape, 2, yOffset - shapeHeight1);
+    const yOffset = BigInt(chamber.length) - rockHeight - 3n;
+    currentShape = move(currentShape, 2, Number(yOffset) - shapeHeight1);
 
     let groundCollision = false;
     while (!groundCollision) {
-      const currentJet = jet.next().value;
+      const { index: jetIndex, jet: currentJet } = jet.next().value;
 
       let movedShape;
       if (currentJet === "<") {
@@ -94,10 +104,36 @@ function simulate(input: string) {
 
       if (collides(movedShape, chamber)) {
         chamber = addRocks(chamber, currentShape);
-        fallenRocks += 1;
+        fallenRocks += 1n;
         const upperY = Math.min(...currentShape.map(([_, y]) => y));
-        rockHeight = Math.max(rockHeight, chamber.length - upperY);
+        rockHeight =
+          rockHeight > BigInt(chamber.length - upperY)
+            ? rockHeight
+            : BigInt(chamber.length - upperY);
         groundCollision = true;
+
+        const cacheKey = shapeIndex + jetIndex + ":" + chamber
+            .slice(upperY, upperY + cacheSize)
+            .flat()
+            .join("");;
+
+        if (cache[cacheKey]) {
+          const [cFallenRocks, cRockHeight] = cache[cacheKey];
+
+          const diffFallenRocks = BigInt(fallenRocks) - BigInt(cFallenRocks);
+          const diffRockHeight = BigInt(rockHeight) - BigInt(cRockHeight);
+
+          const remainingRocks = BigInt(target) - BigInt(fallenRocks);
+          const repeat = BigInt(remainingRocks) / BigInt(diffFallenRocks);
+
+          fallenRocks += repeat * diffFallenRocks;
+          repeatingHeight += repeat * diffRockHeight;
+        }
+
+        if (cacheKey.length > cacheSize * chamberWidth) {
+          cache[cacheKey] = [fallenRocks, rockHeight];
+        }
+
         break;
       }
 
@@ -105,9 +141,7 @@ function simulate(input: string) {
     }
   }
 
-  printChamber(chamber);
-
-  return rockHeight;
+  return rockHeight + repeatingHeight;
 }
 
 function solve() {
@@ -116,3 +150,4 @@ function solve() {
 }
 
 console.log(measureTime(() => solve()));
+
